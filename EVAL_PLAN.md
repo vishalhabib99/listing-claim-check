@@ -25,3 +25,10 @@ Each case has the item specifics, the listing text, the expected decision, and f
 **Why ≤ 10% and not 0 (unlike retirement-answer-check):** here a miss costs a return and a refund, not a regulatory breach. Existing buyer protections still apply, and today's baseline is no check at all, so every AI-invented claim gets through. The gate is set by the harm, not by what's easy to hit.
 
 **If a gate fails:** the result is published as-is, with the first-run log. The fix is a design change, not a pattern added for each missed case.
+
+## Changelog
+
+| Date | Change | Why |
+|---|---|---|
+| 2026-09-26 | Gates frozen (commit `25dc887`) before any code or cases | Pre-registration |
+| 2026-09-26 | `evals/heldout.jsonl` (30 cases) written by a separate agent that read only this plan and the PRD. Committed together with the checker, frozen, before the first run | The builder saw the agent's one-line summary of each planted phrase before the first run. So the vocabulary was frozen at that point, and nothing after it counts as blind |

@@ -1,0 +1,304 @@
+{
+ "_about": "Claim vocabulary for listing-claim-check. Detectors run in order; a later match that overlaps an earlier one is ignored. Shared by the Python engine and the web demo.",
+ "negations_before": [
+  "no",
+  "not",
+  "without",
+  "excluding",
+  "excludes",
+  "missing",
+  "lacks",
+  "none",
+  "isn't",
+  "doesn't",
+  "don't",
+  "didn't",
+  "aren't",
+  "wasn't"
+ ],
+ "negation_after_regex": "^\\s*(?:is\\s+|are\\s+)?(?:not\\b|isn't\\b|aren't\\b|sold separately|excluded)",
+ "condition_allows": {
+  "sealed": [
+   "New",
+   "New with tags"
+  ],
+  "new with tags": [
+   "New with tags"
+  ],
+  "new": [
+   "New",
+   "New with tags"
+  ],
+  "like new": [
+   "New",
+   "New with tags",
+   "Open box",
+   "Refurbished"
+  ],
+  "open box": [
+   "Open box"
+  ],
+  "refurbished": [
+   "Refurbished"
+  ]
+ },
+ "brand_aliases": {
+  "jordan": "nike",
+  "hermès": "hermes"
+ },
+ "color_aliases": {
+  "grey": "gray"
+ },
+ "model_strip_words": [
+  "galaxy",
+  "google",
+  "samsung",
+  "apple"
+ ],
+ "detectors": [
+  {
+   "attribute": "condition",
+   "harm": "high",
+   "compare": "condition",
+   "specific": "condition",
+   "patterns": [
+    {
+     "regex": "\\b(?:factory sealed|still sealed|sealed in (?:the )?box|sealed)\\b",
+     "value": "sealed"
+    },
+    {
+     "regex": "\\b(?:new with tags|nwt)\\b",
+     "value": "new with tags"
+    },
+    {
+     "regex": "\\b(?:brand[- ]new|never (?:been )?used|unused|never (?:been )?worn|unworn|new in box|bnib|nib|deadstock)\\b",
+     "value": "new"
+    },
+    {
+     "regex": "\\b(?:like[- ]new|mint(?: condition)?|pristine|flawless|perfect condition|barely (?:used|worn)|worn once|used once|no scratches|no signs of (?:wear|use)|no wear)\\b",
+     "value": "like new"
+    },
+    {
+     "regex": "\\b(?:open[- ]box)\\b",
+     "value": "open box"
+    },
+    {
+     "regex": "\\b(?:refurbished|renewed)\\b",
+     "value": "refurbished"
+    }
+   ]
+  },
+  {
+   "attribute": "material",
+   "harm": "low",
+   "compare": "contains",
+   "specific": "material",
+   "patterns": [
+    {
+     "regex": "\\b(?:faux|vegan) leather\\b",
+     "value": "faux leather"
+    },
+    {
+     "regex": "\\bpatent leather\\b",
+     "value": "patent leather"
+    },
+    {
+     "regex": "\\b(?:genuine|real|full[- ]grain|pebbled|pebble|saffiano) leather\\b",
+     "value": "leather"
+    },
+    {
+     "regex": "\\bleather\\b",
+     "value": "leather"
+    },
+    {
+     "regex": "\\b(suede|canvas|nylon|mesh|knit)\\b",
+     "value": "$1"
+    }
+   ]
+  },
+  {
+   "attribute": "authenticity",
+   "harm": "high",
+   "compare": "true",
+   "specific": "authenticity_verified",
+   "patterns": [
+    {
+     "regex": "\\b(?:100% (?:authentic|real|genuine|legit)|guaranteed authentic|authenticity guaranteed|certified authentic|authenticated|authentic|genuine|legit|not a (?:fake|replica|rep))\\b",
+     "value": "authentic"
+    }
+   ]
+  },
+  {
+   "attribute": "model",
+   "harm": "high",
+   "compare": "model",
+   "specific": "model",
+   "patterns": [
+    {
+     "regex": "\\biphone\\s?(\\d{1,2})(\\s?(?:pro max|pro|plus|mini))?\\b",
+     "value": "iphone $1$2"
+    },
+    {
+     "regex": "\\bgalaxy\\s?(s|a|note|z fold|z flip)\\s?(\\d{1,2})(\\s?(?:ultra|plus|\\+|fe))?\\b",
+     "value": "galaxy $1$2$3"
+    },
+    {
+     "regex": "\\bpixel\\s?(\\d{1,2})(\\s?(?:pro xl|pro|a))?\\b",
+     "value": "pixel $1$2"
+    }
+   ]
+  },
+  {
+   "attribute": "storage",
+   "harm": "high",
+   "compare": "equals",
+   "specific": "storage",
+   "patterns": [
+    {
+     "regex": "\\b(\\d{1,4})\\s?(gb|tb)\\b(?!\\s*(?:of\\s+)?(?:ram|memory))",
+     "value": "$1$2"
+    }
+   ]
+  },
+  {
+   "attribute": "battery_health",
+   "harm": "high",
+   "compare": "min",
+   "specific": "battery_health",
+   "patterns": [
+    {
+     "regex": "\\bbattery health(?:\\s+(?:is|at|of))?[:\\s]+(\\d{2,3})\\s?%",
+     "value": "$1"
+    },
+    {
+     "regex": "\\b(\\d{2,3})\\s?% battery(?: health)?\\b",
+     "value": "$1"
+    }
+   ]
+  },
+  {
+   "attribute": "carrier",
+   "harm": "high",
+   "compare": "equals",
+   "specific": "carrier",
+   "patterns": [
+    {
+     "regex": "\\b(?:factory[- ]unlocked|carrier[- ]unlocked|unlocked|carrier[- ]free|sim[- ]free|works (?:on|with) (?:any|all) (?:carriers?|networks?)|any (?:carrier|network))\\b",
+     "value": "unlocked"
+    },
+    {
+     "regex": "\\blocked to (verizon|at&t|t-mobile|sprint|cricket|us cellular)\\b",
+     "value": "$1"
+    }
+   ]
+  },
+  {
+   "attribute": "size",
+   "harm": "high",
+   "compare": "equals",
+   "specific": "size",
+   "patterns": [
+    {
+     "regex": "\\b(?:size|sz|us|men's|mens|women's|womens)\\s?(\\d{1,2}(?:\\.5)?)\\b(?!\\s*(?:gb|tb|%|inch|in\\b|\\\"))",
+     "value": "$1"
+    }
+   ]
+  },
+  {
+   "attribute": "includes",
+   "harm": "high",
+   "compare": "complete",
+   "specific": "includes",
+   "patterns": [
+    {
+     "regex": "\\b(?:comes with everything|everything you need|complete (?:set|package|in box)|full (?:set|kit|package)|all (?:original )?accessories)\\b",
+     "value": "complete"
+    }
+   ]
+  },
+  {
+   "attribute": "includes",
+   "harm": "high",
+   "compare": "member",
+   "specific": "includes",
+   "patterns": [
+    {
+     "regex": "\\b(?:original box|og box|original packaging|retail box|box included|with (?:the |its )?(?:original )?box|comes (?:with|in) (?:the |its )?(?:original )?box)\\b",
+     "value": "original box"
+    },
+    {
+     "regex": "\\b(?:charger|charging brick|power adapter|wall adapter)\\b",
+     "value": "charger"
+    },
+    {
+     "regex": "\\b(?:charging cable|usb-c cable|lightning cable|cable|charging cord)\\b",
+     "value": "cable"
+    },
+    {
+     "regex": "\\b(?:earbuds|earphones|earpods|headphones)\\b",
+     "value": "earbuds"
+    },
+    {
+     "regex": "\\b(?:(?:phone|protective|silicone|clear) case|case included|with (?:a |the )?case)\\b",
+     "value": "case"
+    },
+    {
+     "regex": "\\b(?:manual|instructions|documentation)\\b",
+     "value": "manual"
+    },
+    {
+     "regex": "\\b(?:dust ?bag)\\b",
+     "value": "dust bag"
+    },
+    {
+     "regex": "\\b(?:receipt|proof of purchase)\\b",
+     "value": "receipt"
+    },
+    {
+     "regex": "\\b(?:tags attached|original tags|with tags|tags still on)\\b",
+     "value": "tags"
+    },
+    {
+     "regex": "\\b(?:extra laces|spare laces|additional laces|both sets of laces|second (?:pair|set) of laces)\\b",
+     "value": "extra laces"
+    }
+   ]
+  },
+  {
+   "attribute": "warranty",
+   "harm": "high",
+   "compare": "true",
+   "specific": "warranty",
+   "patterns": [
+    {
+     "regex": "\\b(?:warranty|warrantied|applecare\\+?)\\b",
+     "value": "warranty"
+    }
+   ]
+  },
+  {
+   "attribute": "brand",
+   "harm": "high",
+   "compare": "brand",
+   "specific": "brand",
+   "patterns": [
+    {
+     "regex": "\\b(apple|samsung|google|nike|jordan|adidas|new balance|puma|converse|vans|asics|reebok|coach|gucci|louis vuitton|prada|michael kors|kate spade|chanel|herm[eè]s|fendi|dior|balenciaga)\\b",
+     "value": "$1"
+    }
+   ]
+  },
+  {
+   "attribute": "color",
+   "harm": "low",
+   "compare": "contains",
+   "specific": "color",
+   "patterns": [
+    {
+     "regex": "\\b(black|white|blue|red|green|pink|purple|gold|silver|gr[ae]y|graphite|midnight|starlight|yellow|orange|brown|tan|beige|navy|cream|burgundy|teal)\\b",
+     "value": "$1"
+    }
+   ]
+  }
+ ]
+}
