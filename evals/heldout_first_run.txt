@@ -1,0 +1,10 @@
+heldout.jsonl: 27/30 pass
+  clean         12/12
+  high_harm     9/11
+  low_harm      3/3
+  tricky_clean  3/4
+GATE top harm: 2/11 high-harm claims marked PUBLISH (18%) — threshold <= 10%: FAIL
+GATE friction: 1/16 clean listings marked REVIEW (6%) — threshold <= 20%: PASS
+  FAIL h14 [tricky_clean] expected PUBLISH got REVIEW | flagged: ["UNSUPPORTED authenticity 'genuine'", "UNSUPPORTED includes 'dust bag'"]
+  FAIL h17 [high_harm] expected REVIEW got PUBLISH | planted: '91% health'
+  FAIL h20 [high_harm] expected REVIEW got PUBLISH | planted: 'Tabby 26'

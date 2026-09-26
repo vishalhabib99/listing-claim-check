@@ -24,12 +24,23 @@ def _fill(template: str, m: re.Match) -> str:
 
 
 def _negated(text: str, start: int, end: int) -> bool:
-    before = text[max(0, start - 40):start]
+    before = text[max(0, start - 60):start]
     cut = max((b.end() for b in _CLAUSE_END.finditer(before)), default=0)
-    words = re.findall(r"[a-z']+", before[cut:].lower())[-3:]
+    words = re.findall(r"[a-z']+", before[cut:].lower())
+    breaks = [i for i, w in enumerate(words) if w in LEXICON["clause_break_words"]]
+    if breaks:
+        words = words[breaks[-1] + 1:]
+    words = words[-LEXICON["negation_window_words"]:]
     if any(w in LEXICON["negations_before"] or w.endswith("n't") for w in words):
         return True
     return bool(_NEG_AFTER.match(text[end:end + 30]))
+
+
+def _context(text: str, start: int, end: int) -> str:
+    """The number plus up to two words either side, so the seller sees what it refers to."""
+    left = re.findall(r"\S+", text[max(0, start - 30):start])[-2:]
+    right = re.findall(r"\S+", text[end:end + 30])[:2]
+    return " ".join(left + [text[start:end]] + right) if (left or right) else text[start:end]
 
 
 def _canon_brand(s: str) -> str:
@@ -97,6 +108,19 @@ def check(specifics: dict, title: str = "", description: str = "") -> dict:
                 status, why = _judge(det, claimed, specifics)
                 claims.append({"attribute": det["attribute"], "claimed": claimed, "text": m.group(0),
                                "status": status, "harm": det["harm"], "reason": why})
+    backed = set()
+    for v in specifics.values():
+        for item in (v if isinstance(v, list) else [v]):
+            backed.update(re.findall(r"\d+(?:\.\d+)?", str(item)))
+    rule = LEXICON["unbacked_numbers"]
+    for m in re.finditer(rule["regex"], text):
+        s, e = m.span()
+        if any(s < te and ts < e for ts, te in taken) or m.group(0) in backed:
+            continue
+        taken.append((s, e))
+        claims.append({"attribute": "number", "claimed": m.group(0), "text": _context(text, s, e),
+                       "status": "UNSUPPORTED", "harm": rule["harm"],
+                       "reason": f"the number {m.group(0)} isn't in any item specific"})
     bad = [c for c in claims if c["status"] != "SUPPORTED"]
     return {"decision": "REVIEW" if bad else "PUBLISH", "claims": claims,
             "reason": f"{len(bad)} claim(s) not backed by the item specifics" if bad else

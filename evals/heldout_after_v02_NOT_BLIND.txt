@@ -1,0 +1,8 @@
+heldout.jsonl: 30/30 pass
+  clean         12/12
+  high_harm     11/11
+  low_harm      3/3
+  tricky_clean  4/4
+GATE top harm: 0/11 high-harm claims marked PUBLISH (0%) — threshold <= 10%: PASS
+GATE friction: 0/16 clean listings marked REVIEW (0%) — threshold <= 20%: PASS
+
