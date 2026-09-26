@@ -1,0 +1,9 @@
+heldout2.jsonl: 28/30 pass
+  clean         12/12
+  high_harm     11/11
+  low_harm      3/3
+  tricky_clean  2/4
+GATE top harm: 0/11 high-harm claims marked PUBLISH (0%) — threshold <= 10%: PASS
+GATE friction: 2/16 clean listings marked REVIEW (12%) — threshold <= 20%: PASS
+  FAIL k13 [tricky_clean] expected PUBLISH got REVIEW | flagged: ["CONTRADICTED includes 'charger'"]
+  FAIL k16 [tricky_clean] expected PUBLISH got REVIEW | flagged: ["CONTRADICTED includes 'receipt'"]

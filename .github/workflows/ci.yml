@@ -1,0 +1,46 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: pip install -e . pytest
+      - run: pytest -q tests
+      - run: python evals/run.py evals/heldout2.jsonl
+  package:
+    # Installs the built wheel the way users do (not editable), from outside the repo.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build && python -m build --wheel --outdir /tmp/dist
+      - run: python -m venv /tmp/v && /tmp/v/bin/pip install /tmp/dist/*.whl
+      - working-directory: /tmp
+        run: |
+          /tmp/v/bin/python -c "
+          from listing_claim_check import check
+          assert check({'size': '10'}, 'Sneakers size 11')['decision'] == 'REVIEW'
+          assert check({'size': '10'}, 'Sneakers size 10')['decision'] == 'PUBLISH'
+          print('installed package OK')"
+  trust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - uses: vishalhabib99/mcp-trust-check@v1
+        with:
+          path: .
+          run: "listing-claim-check"
+          fail-on: block

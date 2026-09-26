@@ -2,7 +2,7 @@
 
 Deterministic, no model. Every claim the vocabulary (lexicon.json) recognizes is marked
 SUPPORTED, CONTRADICTED or UNSUPPORTED. Any claim that isn't SUPPORTED means REVIEW.
-docs/demo/checker.js implements the same rules; tests/test_parity.py keeps them identical.
+docs/checker.js implements the same rules; tests/test_parity.py keeps them identical.
 """
 from __future__ import annotations
 

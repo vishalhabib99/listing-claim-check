@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Listing Claim Check</title>
+<meta name="description" content="Paste an AI-written marketplace listing and the seller's item specifics. See which claims the specifics don't back up.">
+<style>
+  :root { --bg:#F6F7F9; --surface:#FFFFFF; --text:#151A2D; --soft:#525B70; --faint:#8A92A5; --border:#E2E5EC;
+          --accent:#1D4ED8; --accent-soft:#E8EEFC; --ok:#047857; --ok-soft:#D1FAE5; --no:#B91C1C; --no-soft:#FEE2E2; --flag:#B45309; --flag-soft:#FEF3C7; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg:#0E1117; --surface:#161B26; --text:#ECEEF3; --soft:#A7AEC0; --faint:#6B7387; --border:#272D3B;
+    --accent:#7B9CF8; --accent-soft:#1B2740; --ok:#34D399; --ok-soft:#0D2E24; --no:#F87171; --no-soft:#3A1414; --flag:#FBBF24; --flag-soft:#3A2A0B; } }
+  :root[data-theme="dark"] { --bg:#0E1117; --surface:#161B26; --text:#ECEEF3; --soft:#A7AEC0; --faint:#6B7387; --border:#272D3B;
+    --accent:#7B9CF8; --accent-soft:#1B2740; --ok:#34D399; --ok-soft:#0D2E24; --no:#F87171; --no-soft:#3A1414; --flag:#FBBF24; --flag-soft:#3A2A0B; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; padding:24px 16px 48px; }
+  .page { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--soft); margin: 0 0 16px; font-size: 14px; }
+  .examples { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  button { font:inherit; font-size:13px; color:var(--accent); background:var(--accent-soft); border:0; border-radius:99px; padding:6px 12px; cursor:pointer; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; }
+  label { display:block; font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); margin-bottom:6px; }
+  textarea, input { width:100%; font:inherit; font-size:14px; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+  textarea { min-height: 120px; resize: vertical; }
+  #specs { font-family: ui-monospace, Menlo, monospace; font-size: 13px; min-height: 250px; }
+  .field + .field { margin-top: 10px; }
+  .verdict { display:flex; align-items:center; gap:12px; margin: 14px 0 10px; }
+  .badge { font-weight:700; font-size:14px; padding:4px 12px; border-radius:99px; }
+  .PUBLISH { background:var(--ok-soft); color:var(--ok); }
+  .REVIEW { background:var(--flag-soft); color:var(--flag); }
+  .claims { display:grid; gap:8px; }
+  .claim { display:grid; grid-template-columns: 120px 1fr; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:14px; }
+  @media (max-width: 480px) { .claim { grid-template-columns: 1fr; gap:4px; } }
+  .st { font-size:12px; font-weight:700; }
+  .st.SUPPORTED { color: var(--ok); } .st.CONTRADICTED { color: var(--no); } .st.UNSUPPORTED { color: var(--flag); }
+  .claim q { font-weight:600; } .why { color: var(--soft); font-size: 13px; }
+  .error { color: var(--no); font-size: 14px; }
+  .foot { font-size: 13px; color: var(--faint); margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Does the listing say more than the seller entered?</h1>
+  <p class="sub">Paste an AI-written listing and the seller's item specifics. Every claim the specifics don't back up is flagged with its exact words. Runs in your browser; nothing is sent anywhere.</p>
+  <div class="examples" id="examples"></div>
+  <div class="grid">
+    <div class="card"><label for="specs">Item specifics (JSON)</label><textarea id="specs" spellcheck="false"></textarea></div>
+    <div class="card">
+      <div class="field"><label for="title">AI-written title</label><input id="title"></div>
+      <div class="field"><label for="desc">AI-written description</label><textarea id="desc"></textarea></div>
+    </div>
+  </div>
+  <div class="verdict" aria-live="polite"><span id="badge" class="badge"></span><span id="summary" class="sub" style="margin:0"></span></div>
+  <div class="claims" id="claims"></div>
+  <p class="foot">Deterministic, no model: a claim phrased outside its vocabulary isn't seen, so PUBLISH means "nothing unbacked was found", not "verified true". Any number no specific backs up is flagged. <a href="https://github.com/vishalhabib99/listing-claim-check">Source, PRD and blind eval results</a>.</p>
+</div>
+<script src="checker.js"></script>
+<script>
+(function () {
+  "use strict";
+  const EX = {
+    "Used iPhone": { specs: { category: "smartphone", brand: "Apple", model: "iPhone 13", condition: "Used", storage: "128GB", carrier: "Verizon", battery_health: 84, color: "Midnight", includes: ["cable"] },
+      title: "Apple iPhone 13 128GB Midnight - Unlocked", desc: "Like-new condition with 92% battery health. Comes with the original box and charger." },
+    "Sneakers": { specs: { category: "sneakers", brand: "Nike", model: "Dunk Low", condition: "Used", size: "10", color: "White/Black", material: "Leather", includes: ["extra laces"] },
+      title: "Nike Dunk Low White/Black - Size 10", desc: "Leather upper, lightly used, with extra laces. No original box." },
+    "Handbag": { specs: { category: "handbag", brand: "Coach", model: "Tabby 20", condition: "Used", color: "Black", material: "Pebbled leather", includes: ["dust bag"] },
+      title: "Coach Tabby 26 Shoulder Bag - Black", desc: "100% authentic Coach Tabby in genuine black leather. Includes dust bag." },
+  };
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  let LEX = null;
+  function load(name) { const e = EX[name]; $("specs").value = JSON.stringify(e.specs, null, 2); $("title").value = e.title; $("desc").value = e.desc; run(); }
+  function run() {
+    if (!LEX) return;
+    let specs;
+    try { specs = JSON.parse($("specs").value || "{}"); if (typeof specs !== "object" || Array.isArray(specs) || specs === null) throw 0; }
+    catch (e) { $("badge").className = "badge"; $("badge").textContent = ""; $("summary").textContent = ""; $("claims").innerHTML = '<p class="error">Item specifics must be a JSON object, like {"brand": "Apple"}.</p>'; return; }
+    const r = ListingCheck.check(LEX, specs, $("title").value, $("desc").value);
+    $("badge").className = "badge " + r.decision; $("badge").textContent = r.decision; $("summary").textContent = r.reason;
+    const order = { CONTRADICTED: 0, UNSUPPORTED: 1, SUPPORTED: 2 };
+    $("claims").innerHTML = r.claims.slice().sort((a, b) => order[a.status] - order[b.status]).map(c =>
+      `<div class="claim"><div><div class="st ${c.status}">${c.status}</div><div class="why">${esc(c.attribute)}</div></div>
+       <div><q>${esc(c.text)}</q><div class="why">${esc(c.reason)}</div></div></div>`).join("") || '<p class="sub">No recognized claims.</p>';
+  }
+  Object.keys(EX).forEach(n => { const b = document.createElement("button"); b.textContent = n; b.onclick = () => load(n); $("examples").appendChild(b); });
+  ["specs", "title", "desc"].forEach(id => $(id).addEventListener("input", run));
+  fetch("lexicon.json").then(r => r.json()).then(l => { LEX = l; load("Used iPhone"); })
+    .catch(() => { $("claims").innerHTML = '<p class="error">Couldn\'t load the claim vocabulary. Refresh to try again.</p>'; });
+})();
+</script>
+</body>
+</html>
