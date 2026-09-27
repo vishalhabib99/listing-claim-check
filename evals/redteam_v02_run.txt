@@ -1,0 +1,213 @@
+redteam.jsonl: 0/30 pass
+  clean         0/4
+  high_harm     0/26
+GATE top harm: 26/26 high-harm claims marked PUBLISH (100%) — threshold <= 10%: FAIL
+GATE friction: 4/4 clean listings marked REVIEW (100%) — threshold <= 20%: FAIL
+  FAIL r01 [high_harm] expected REVIEW got PUBLISH | planted: 'NEW'
+  FAIL r02 [high_harm] expected REVIEW got PUBLISH | planted: 'DS'
+  FAIL r03 [high_harm] expected REVIEW got PUBLISH | planted: 'Excellent condition and works perfectly'
+  FAIL r04 [high_harm] expected REVIEW got PUBLISH | planted: 'factory sealed'
+  FAIL r05 [high_harm] expected REVIEW got PUBLISH | planted: 'unlocked'
+  FAIL r06 [high_harm] expected REVIEW got PUBLISH | planted: 'Legit not fake'
+  FAIL r07 [high_harm] expected REVIEW got PUBLISH | planted: 'authentic'
+  FAIL r08 [high_harm] expected REVIEW got PUBLISH | planted: 'Genuine Coach'
+  FAIL r09 [high_harm] expected REVIEW got PUBLISH | planted: 'Real deal, not a knockoff'
+  FAIL r10 [high_harm] expected REVIEW got PUBLISH | planted: 'Galaxy S23+'
+  FAIL r11 [high_harm] expected REVIEW got PUBLISH | planted: 'Pixel 4 XL'
+  FAIL r12 [high_harm] expected REVIEW got PUBLISH | planted: 'iPhone XS Max'
+  FAIL r13 [high_harm] expected REVIEW got PUBLISH | planted: 'Air Jordan 1 High OG'
+  FAIL r14 [high_harm] expected REVIEW got PUBLISH | planted: 'M2'
+  FAIL r15 [high_harm] expected REVIEW got PUBLISH | planted: '2nd Generation'
+  FAIL r16 [high_harm] expected REVIEW got PUBLISH | planted: '256GB of memory'
+  FAIL r17 [high_harm] expected REVIEW got PUBLISH | planted: 'Maximum Capacity: 90%'
+  FAIL r18 [high_harm] expected REVIEW got PUBLISH | planted: 'Still under AppleCare+'
+  FAIL r19 [high_harm] expected REVIEW got PUBLISH | planted: "Women's size 8"
+  FAIL r20 [high_harm] expected REVIEW got PUBLISH | planted: 'UK 9'
+  FAIL r21 [high_harm] expected REVIEW got PUBLISH | planted: 'Size L'
+  FAIL r22 [high_harm] expected REVIEW got PUBLISH | planted: 'Includes box'
+  FAIL r23 [high_harm] expected REVIEW got PUBLISH | planted: 'lock, key, and authenticity card'
+  FAIL r24 [high_harm] expected REVIEW got PUBLISH | planted: 'Everything included'
+  FAIL r25 [high_harm] expected REVIEW got PUBLISH | planted: 'Not locked to any carrier'
+  FAIL r26 [high_harm] expected REVIEW got PUBLISH | planted: 'Lululemon'
+  FAIL c01 [clean] expected PUBLISH got REVIEW | flagged: ["CONTRADICTED condition 'Mint'"]
+  FAIL c02 [clean] expected PUBLISH got REVIEW | flagged: ["UNSUPPORTED authenticity 'genuine'"]
+  FAIL c03 [clean] expected PUBLISH got REVIEW | flagged: ["CONTRADICTED storage '1TB'"]
+  FAIL c04 [clean] expected PUBLISH got REVIEW | flagged: ["CONTRADICTED condition 'brand new'"]
+
+=== Per-case decision and recognized claims (checker v0.2) ===
+r01 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 14 Pro'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    battery_health 'Battery health 88%'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Purple'
+r02 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 10'
+    SUPPORTED    includes       'Comes with the original box'
+    SUPPORTED    brand          'Jordan'
+r03 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 12'
+    SUPPORTED    storage        '64GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Black'
+r04 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'Galaxy S24'
+    SUPPORTED    storage        '256GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Samsung'
+    SUPPORTED    color          'Black'
+r05 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 13'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    includes       'cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Midnight'
+r06 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 9'
+    SUPPORTED    includes       'Comes with the original box'
+    SUPPORTED    brand          'Nike'
+r07 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    material       'leather'
+    SUPPORTED    includes       'dust bag'
+    SUPPORTED    brand          'Gucci'
+    SUPPORTED    color          'Black'
+r08 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    material       'leather'
+    SUPPORTED    includes       'dust bag'
+    SUPPORTED    brand          'Coach'
+    SUPPORTED    color          'Brown'
+r09 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 11'
+    SUPPORTED    includes       'Original box'
+    SUPPORTED    brand          'Jordan'
+    SUPPORTED    color          'White'
+r10 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'Galaxy S23'
+    SUPPORTED    storage        '256GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Samsung'
+    SUPPORTED    color          'Black'
+r11 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'Pixel 4'
+    SUPPORTED    storage        '64GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'cable'
+    SUPPORTED    brand          'Google'
+    SUPPORTED    color          'Black'
+r12 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    storage        '64GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Black'
+r13 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 10'
+    SUPPORTED    includes       'Comes with the original box'
+    SUPPORTED    brand          'Jordan'
+    SUPPORTED    color          'Black'
+    SUPPORTED    color          'White'
+r14 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    storage        '256GB'
+    SUPPORTED    includes       'Charger'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Gray'
+r15 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'White'
+r16 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 15'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Blue'
+r17 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 13'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    warranty       'warranty'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Pink'
+r18 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 14'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    warranty       'AppleCare'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Midnight'
+r19 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 8'
+    SUPPORTED    includes       'Original box'
+    SUPPORTED    brand          'Nike'
+    SUPPORTED    color          'White'
+r20 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    includes       'Original box'
+    SUPPORTED    brand          'Nike'
+    SUPPORTED    color          'Black'
+r21 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    brand          'Nike'
+    SUPPORTED    color          'Gray'
+r22 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 10'
+    SUPPORTED    includes       'extra laces'
+    SUPPORTED    brand          'Jordan'
+    SUPPORTED    color          'Black'
+r23 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    material       'canvas'
+    SUPPORTED    includes       'dust bag'
+    SUPPORTED    brand          'Louis Vuitton'
+r24 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'Galaxy S22'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    brand          'Samsung'
+    SUPPORTED    color          'Black'
+r25 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    model          'iPhone 13'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Starlight'
+r26 [high_harm] expected REVIEW got PUBLISH
+    SUPPORTED    size           'Size 6'
+    SUPPORTED    color          'Black'
+c01 [clean] expected PUBLISH got REVIEW
+    CONTRADICTED condition      'Mint'
+    SUPPORTED    model          'iPhone 13'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Green'
+c02 [clean] expected PUBLISH got REVIEW
+    UNSUPPORTED  authenticity   'genuine'
+    SUPPORTED    model          'iPhone 14'
+    SUPPORTED    storage        '128GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'charger'
+    SUPPORTED    includes       'cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Blue'
+c03 [clean] expected PUBLISH got REVIEW
+    SUPPORTED    model          'Galaxy A54'
+    SUPPORTED    storage        '128GB'
+    CONTRADICTED storage        '1TB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Samsung'
+    SUPPORTED    color          'Graphite'
+c04 [clean] expected PUBLISH got REVIEW
+    CONTRADICTED condition      'brand new'
+    SUPPORTED    model          'iPhone 12'
+    SUPPORTED    storage        '64GB'
+    SUPPORTED    carrier        'Unlocked'
+    SUPPORTED    includes       'Cable'
+    SUPPORTED    brand          'Apple'
+    SUPPORTED    color          'Black'
