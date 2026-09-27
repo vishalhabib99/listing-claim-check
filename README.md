@@ -37,6 +37,8 @@ Gates were [set before any code](EVAL_PLAN.md). Each held-out set was written by
 
 **Known issue (v0.2):** "no box **or** charger" isn't read as negating the charger, because "or" ends the negation. Both false REVIEWs on held-out 2 came from this. It's safe-direction friction, not a missed claim. It's left unfixed until a third blind set can measure the fix.
 
+**How much "0 of 11" proves.** It passes the gate on this set, but with 0 misses in 11, the true high-harm miss rate could still be as high as **24%** (one-sided 95% exact bound), above the 10% gate itself. Showing it's under 10% would take **29** high-harm cases in a row with none through.
+
 **Limits:** 60 blind cases in 3 categories (phones, sneakers, handbags), all written by one model family. It hasn't been tested on real listings. Handbag and sneaker model names aren't recognized as model claims (only their numbers are).
 
 ## Use it
