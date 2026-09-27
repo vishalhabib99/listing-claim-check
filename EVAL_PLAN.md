@@ -26,6 +26,15 @@ Each case has the item specifics, the listing text, the expected decision, and f
 
 **If a gate fails:** the result is published as-is, with the first-run log. The fix is a design change, not a pattern added for each missed case.
 
+## Red team (v0.2), bar frozen 2026-09-27 before any attack is written
+
+The two blind sets were written from the plan, so they show the checker handles the listings a spec-reader imagines. The red team tests the listings someone who has **read the code** would write to get an unbacked claim through.
+
+- **Who:** a separate agent that may read everything: code, vocabulary, PRD, this plan and both held-out sets. It writes `evals/redteam.jsonl` in the same format and runs the checker itself.
+- **What counts as a hole:** a listing whose text makes a **high-harm** claim (PRD section 4) that the item specifics don't back or that they contradict, and that v0.2 marks **PUBLISH**. The claim must be one a real seller or listing model could plausibly write (no unreadable text, no invisible characters used only to hide a word). The builder confirms each reported hole against the PRD before it counts.
+- **Bar:** **0 confirmed high-harm holes** for the red team to count as held. Low-harm holes (color, material) and false REVIEWs on clean listings are recorded but don't block.
+- **If the bar fails:** results are published as-is. The fix is a design change, not a pattern per case, followed by a fresh blind set (held-out 3) from a new agent before any new claim is made. The held-out-2 known issue ("no box or charger") is fixed only in that same round.
+
 ## Changelog
 
 | Date | Change | Why |
