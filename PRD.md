@@ -46,3 +46,18 @@ See [EVAL_PLAN.md](EVAL_PLAN.md). Gates are set before the first run.
 ## 8. Rollout
 
 Shadow mode (flag, don't block) → show REVIEW reasons to sellers in one category → all three categories. **Kill switch:** everything publishes as it does today.
+
+**Shadow-mode exit rule (set before shadow mode starts).** Bar: high-harm claims get through less than 10% of the time (the launch gate), at 95% confidence (one-sided exact binomial). A miss is a high-harm claim the checker would have published (marked PUBLISH), as judged by the reviewer. Each run uses one fixed checker version. The run exits when the number of reviewed cases reaches the count for the misses so far:
+
+| Misses so far | Exit at this many reviewed cases |
+|---|---|
+| 0 | 37 |
+| 1 | 55 |
+| 2 | 71 |
+| 3 | 87 |
+| 4 or more | The run fails. Fix the checker and start a new run |
+
+- **Why not stop at the first clean count:** taken alone, 0 misses in 29 meets the bar. But checking at each row in turn gives the checker four chances to pass, and a checker whose true rate is exactly 10% would then exit about 10% of the time instead of 5%. The counts above are set so the whole schedule, all four chances together, stays at 5% (exact, summed over every path a run can take). The price is 8 more cases on a clean run.
+- **A miss doesn't restart the count.** If a miss leads to a change in the checker, that's a new version and a new run starting from 0, and the stopped run stays in the report with its count and its misses. Restarting would keep only the runs that happened to finish clean.
+- **The result covers only what the run sampled**, which is live traffic. Blind-set and red-team results are bounds on other populations and are reported next to it, not merged into it. A clean shadow run here says nothing about a seller who is trying to get past the checker: the v0.2 red team got 22 of 22 in-scope attacks through.
+- The continuation rule came out of [a reader's review](https://dev.to/arhancanli/comment/3g81b) of the "0 of N" write-up.
