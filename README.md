@@ -40,6 +40,14 @@ Gates were [set before any code](EVAL_PLAN.md). Each held-out set was written by
 
 **How much "0 of 11" proves.** It passes the gate on this set, but with 0 misses in 11, the true high-harm miss rate could still be as high as **24%** (one-sided 95% exact bound), above the 10% gate itself. Showing it's under 10% would take **29** high-harm cases in a row with none through.
 
+**Shadow-mode status.** The exit rule in [PRD §8](PRD.md#8-rollout) was fixed before any shadow data exists. This table is rebuilt from [`shadow/log.jsonl`](shadow/log.jsonl) by `python shadow/status.py`, never edited by hand, and CI fails if the two disagree. Any change to the rule after a miss shows up in the history.
+
+<!-- shadow-status -->
+| Run | Checker | Cases reviewed | Misses | Exit at | Status |
+|---|---|---|---|---|---|
+| – | – | 0 | 0 | 37 | Not started: no shadow traffic yet |
+<!-- /shadow-status -->
+
 **The red team broke v0.2.** The blind sets were written from the plan, so they show the checker handles the listings a spec-reader imagines. A separate agent then read the code and wrote listings aimed at its blind spots. The bar, [frozen before the first attack](EVAL_PLAN.md#red-team-v02-bar-frozen-2026-09-27-before-any-attack-is-written), was **0** high-harm claims through. **All 22 in-scope attacks got through** (4 more used categories outside the PRD and aren't counted). The causes fall into a few groups:
 
 - **Wording the vocabulary doesn't know:** a bare "NEW" in the title of a used phone, "DS" on used sneakers, "iPhone XS Max" for an XR, "Includes box", "Not locked to any carrier".
